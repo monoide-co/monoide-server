@@ -17,10 +17,15 @@ export class AuthService {
 
     if (await bcrypt.compare(password, user.password)) {
       const payload: JwtPayload = { email };
-      const accessToken: string = await this.jwtService.signAsync(payload);
+      const accessToken: string = await this.signPayload(payload);
       return { accessToken };
     } else {
       throw new UnauthorizedException('Invalid login credentials');
     }
+  }
+
+  async signPayload(jwtPayload: JwtPayload): Promise<string> {
+    const accessToken: string = await this.jwtService.signAsync(jwtPayload);
+    return accessToken;
   }
 }

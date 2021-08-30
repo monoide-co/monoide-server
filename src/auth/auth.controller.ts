@@ -13,8 +13,12 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  register(@Body() registerUserDto: RegisterUserDto): Promise<void> {
-    return this.usersService.createUser(registerUserDto);
+  async register(
+    @Body() registerUserDto: RegisterUserDto,
+  ): Promise<{ accessToken: string }> {
+    const { email } = await this.usersService.createUser(registerUserDto);
+    const accessToken = await this.authService.signPayload({ email });
+    return { accessToken };
   }
 
   @Post('login')

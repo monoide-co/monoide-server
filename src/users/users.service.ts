@@ -13,7 +13,7 @@ export class UsersService {
     private usersRepository: UsersRepository,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<void> {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { name, email, password } = createUserDto;
 
     const salt = await bcrypt.genSalt();
@@ -26,7 +26,8 @@ export class UsersService {
     });
 
     try {
-      await this.usersRepository.save(user);
+      const createdUser = await this.usersRepository.save(user);
+      return createdUser;
     } catch (err) {
       switch (err.code) {
         case '23505':
