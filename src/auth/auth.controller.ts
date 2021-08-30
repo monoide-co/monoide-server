@@ -27,7 +27,7 @@ export class AuthController {
   ): Promise<{ accessToken: string }> {
     const { email } = loginUserDto;
 
-    const user = await this.usersService.findByEmail(email);
+    const user = await this.usersService.getUserByEmail(email);
 
     if (!user) {
       throw new UnauthorizedException('User does not exist');
