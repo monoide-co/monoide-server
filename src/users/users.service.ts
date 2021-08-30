@@ -4,6 +4,7 @@ import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { ConflictException } from '@nestjs/common';
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
@@ -34,5 +35,9 @@ export class UsersService {
           throw new InternalServerErrorException();
       }
     }
+  }
+
+  findByEmail(email: string): Promise<User> {
+    return this.usersRepository.findOne({ email });
   }
 }
